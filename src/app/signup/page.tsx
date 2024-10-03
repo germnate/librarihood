@@ -5,10 +5,11 @@ import { useRouter } from 'next/navigation'
 import { getDetailedError } from '../utils';
 import { SignUpErrorDisplay } from '../errors/SignUpErrorDisplay';
 
+
 export default function Signup() {
   const router = useRouter()
   const [submitError, setSubmitError] = useState('')
-  const [details, setDetails] = useState<Array<Array<string>>>([])
+  const [details, setDetails] = useState<Array<Array<string>> | null>([])
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
     const formData = new FormData(e.currentTarget)
@@ -28,13 +29,11 @@ export default function Signup() {
     })
 
     const response = await res.json()
-    console.log(response)
-    console.log(getDetailedError(response.details.data))
     if(response.success) {
       router.push('/')
     } else {
       setSubmitError(response.message)
-      setDetails(getDetailedError(response.details.data))
+      setDetails(getDetailedError(response.details?.data || {}))
     }
 
   }
