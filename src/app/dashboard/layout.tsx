@@ -16,7 +16,7 @@ function DashboardLayout({children}: {children: ReactNode}) {
         <div className={`flex flex-col md:flex-row overflow-hidden transition-all duration-300 ${isOpen ? 'h-32' : 'h-0'} md:h-auto`}>
           <Link href='#' className='p-2 hover:text-orange-200 transition-all duration-300'>My Items</Link>
           <Link href='#' className='p-2 hover:text-orange-200 transition-all duration-300'>Borrowed Items</Link>
-          <Link href='#' className='p-2 border-t border-gray-400 md:border-none md:ml-5 hover:text-orange-200 transition-all duration-300'>Signout</Link>
+          <Link href='api/auth/signout' className='p-2 border-t border-gray-400 md:border-none md:ml-5 hover:text-orange-200 transition-all duration-300'>Signout</Link>
         </div>
       </nav>
       {children}
