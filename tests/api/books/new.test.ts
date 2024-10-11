@@ -49,4 +49,8 @@ describe('POST new book', () => {
       }
     })
   })
+
+  it('gracefully handles errors', () => {
+
+  })
 })
