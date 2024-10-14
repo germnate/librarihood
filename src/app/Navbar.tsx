@@ -14,7 +14,7 @@ function NavBar() {
       </div>
       <div className={`flex flex-col md:flex-row overflow-hidden transition-all duration-300 ${isOpen ? 'h-32' : 'h-0'} md:h-auto`}>
         <Link href='/books' className='p-2 hover:text-orange-200 transition-all duration-300'>Manage Books</Link>
-        <Link href='api/auth/signout' className='p-2 border-t border-gray-400 md:border-none md:ml-5 hover:text-orange-200 transition-all duration-300'>Signout</Link>
+        <Link href='/api/auth/signout' className='p-2 border-t border-gray-400 md:border-none md:ml-5 hover:text-orange-200 transition-all duration-300'>Signout</Link>
       </div>
     </nav>
   )
