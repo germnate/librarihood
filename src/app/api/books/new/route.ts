@@ -8,7 +8,8 @@ async function handler(req: NextRequest) {
         const book = await createBook(submissionData)
         return NextResponse.json(({ success: true, bookId: book.id }), { status: 200 })
     } catch (error) {
-        if (!conformsToServerError(error)) return NextResponse.json({ error });
+        console.error(error)
+        if (!conformsToServerError(error)) return NextResponse.json({ error }, { status: 500 });
         const serverError = error as ServerError
         const status = serverError.status || 500;
         const message = serverError.message || 'Internal server error';
