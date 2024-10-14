@@ -50,7 +50,27 @@ describe('POST new book', () => {
     })
   })
 
-  it('gracefully handles errors', () => {
+  it('handles errors', async () => {
+    createBookSpy.mockImplementation(() => {
+      throw new Error('test error!');
+    })
+    await testApiHandler({
+      appHandler: newBookHandler,
+      test: async ({ fetch }) => {
+        const res = await fetch(
+          {
+            method: 'POST',
+            headers: {
+              'content-type': 'application/json'
+            },
+            body: JSON.stringify({
+              title: 'lodr', author: 'tolkien', isbn: 'whatever'
+            }),
 
+          }
+        )
+        expect(await res.json()).toEqual({ message: 'An unexpected error occurred', details: new Error('test error!') });
+      }
+    })
   })
 })
