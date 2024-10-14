@@ -2,9 +2,10 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { NavBar } from "./Navbar";
 
+
 export const metadata: Metadata = {
   title: "Librarihood",
-  description: "Lend and Share",
+  description: "Lend and Borrow",
 };
 
 export default function RootLayout({
