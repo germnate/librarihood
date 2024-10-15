@@ -13,11 +13,10 @@ export default async function ManageBooks() {
     const user: SessionUser | undefined = session?.user
     let books: Array<RecordModel> = []
     if (user?.id) {
-        console.log('user', session?.user)
         books = await pb.collection('Books').getFullList({
             filter: `userId = '${user.id}'`,
+            cache: 'no-store'
         })
-        console.log('records', books)
     }
 
     const bookCollection = Book.collection(books)

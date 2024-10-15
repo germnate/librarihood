@@ -1,22 +1,31 @@
 'use client';
 
+import { fetchUtil } from "@/app/utils";
+// import { useRouter } from "next/navigation";
+
 export default function NewBookPage({ userId }: { userId: string | undefined }) {
+  // const router = useRouter()
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!userId) throw new Error('No User Error!')
     const formData = new FormData(e.currentTarget);
-    await fetch('/api/books/new', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
+    const res = await fetchUtil({
+      url: '/api/books/new',
+      body: {
         title: formData.get('title'),
         author: formData.get('author'),
         isbn: formData.get('isbn'),
         userId,
-      })
+      }
     })
+    // router.push('/books')
+    // /books is making sure to set cache: no-store
+    // I've verified that the header is set in the browser
+    // However, for some reason router.push('/books') or router.replace('/books')
+    // will not initiate a request on the server despite traveling to the /books page.
+    // There is no 200 response from the server. In the meantime,
+    // the below option is working as expected.
+    window.location.href = '/books'
   }
 
   return (
