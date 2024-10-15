@@ -1,22 +1,23 @@
 'use client';
 
 import { fetchUtil } from "@/app/utils";
+import { useRef } from 'react'
 // import { useRouter } from "next/navigation";
 
 export default function NewBookPage({ userId }: { userId: string | undefined }) {
   // const router = useRouter()
+  const fileInputRef = useRef<HTMLInputElement>(null)
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!userId) throw new Error('No User Error!')
     const formData = new FormData(e.currentTarget);
-    const res = await fetchUtil({
-      url: '/api/books/new',
-      body: {
-        title: formData.get('title'),
-        author: formData.get('author'),
-        isbn: formData.get('isbn'),
-        userId,
-      }
+    if (fileInputRef?.current?.files) {
+      formData.append('cover', fileInputRef.current.files[0])
+    }
+    formData.append('userId', userId)
+    const res = await fetch('/api/books/new', {
+      method: 'POST',
+      body: formData
     })
     const { bookId } = await res.json();
     // router.push('/books')
@@ -45,6 +46,10 @@ export default function NewBookPage({ userId }: { userId: string | undefined }) 
           <div className='flex flex-col'>
             <label>ISBN</label>
             <input type='text' name='isbn' className='p-2 border' />
+          </div>
+          <div className='flex flex-col'>
+            <label>Cover</label>
+            <input ref={fileInputRef} type='file' name='cover' className='p-2 border' />
           </div>
           <button type='submit' className='border py-2 bg-green-100 hover:bg-green-200'>
             Create

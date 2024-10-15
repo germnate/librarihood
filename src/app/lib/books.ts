@@ -11,7 +11,7 @@ function getBooksBy(field: string, value: string) {
     })
 }
 
-function createBook(book: Book) {
+function createBook(book: Book | FormData) {
     return pb.collection('Books').create(book)
 }
 

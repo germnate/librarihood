@@ -4,14 +4,14 @@ import { NextRequest, NextResponse } from "next/server"
 
 async function handler(req: NextRequest) {
     try {
-        const submissionData = await req.json()
-        if (!submissionData.userId) {
+        const formData = await req.formData()
+        if (!formData.get('userId')) {
             throw new Error('No user found!')
         }
-        if (!submissionData.title) {
+        if (!formData.get('title')) {
             throw new Error('No title found!')
         }
-        const book = await createBook(submissionData)
+        const book = await createBook(formData)
         return NextResponse.json(({ bookId: book.id }))
     } catch (error: unknown) {
         console.error(error)
