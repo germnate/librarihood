@@ -8,6 +8,9 @@ async function handler(req: NextRequest) {
         if (!submissionData.userId) {
             throw new Error('No user found!')
         }
+        if (!submissionData.title) {
+            throw new Error('No title found!')
+        }
         const book = await createBook(submissionData)
         return NextResponse.json(({ bookId: book.id }))
     } catch (error: unknown) {

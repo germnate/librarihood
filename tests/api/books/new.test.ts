@@ -66,7 +66,6 @@ describe('POST new book', () => {
             body: JSON.stringify({
               title: 'lodr', author: 'tolkien', isbn: 'whatever', userId: 'my-user-id'
             }),
-
           }
         )
 
@@ -94,6 +93,29 @@ describe('POST new book', () => {
         )
 
         expect(await res.json()).toEqual({ error: 'No user found!' });
+        expect(res.status).toBe(500)
+      }
+    })
+  })
+
+  it('requires userId field', async () => {
+    await testApiHandler({
+      appHandler: newBookHandler,
+      test: async ({ fetch }) => {
+        const res = await fetch(
+          {
+            method: 'POST',
+            headers: {
+              'content-type': 'application/json'
+            },
+            body: JSON.stringify({
+              author: 'tolkien', isbn: 'whatever', userId: 'my-user-id'
+            }),
+
+          }
+        )
+
+        expect(await res.json()).toEqual({ error: 'No title found!' });
         expect(res.status).toBe(500)
       }
     })
