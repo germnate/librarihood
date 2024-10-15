@@ -5,11 +5,15 @@ import { NextRequest, NextResponse } from "next/server"
 async function handler(req: NextRequest) {
     try {
         const submissionData = await req.json()
+        if (!submissionData.userId) {
+            throw new Error('No user found!')
+        }
         const book = await createBook(submissionData)
         return NextResponse.json(({ bookId: book.id }))
-    } catch (error) {
+    } catch (error: unknown) {
         console.error(error)
-        return NextResponse.json({ error }, { status: 500 });
+        if (!conformsToServerError(error)) throw error;
+        return NextResponse.json({ error: error.message }, { status: 500 });
     }
 }
 

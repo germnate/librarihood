@@ -40,12 +40,12 @@ describe('POST new book', () => {
               'content-type': 'application/json'
             },
             body: JSON.stringify({
-              title: 'lodr', author: 'tolkien', isbn: 'whatever'
+              title: 'lodr', author: 'tolkien', isbn: 'whatever', userId: 'my-user-id'
             }),
 
           }
         )
-        expect(await res.json()).toStrictEqual({ success: true, bookId: 'RECORD_ID' });
+        expect(await res.json()).toStrictEqual({ bookId: 'RECORD_ID' });
       }
     })
   })
@@ -64,12 +64,37 @@ describe('POST new book', () => {
               'content-type': 'application/json'
             },
             body: JSON.stringify({
+              title: 'lodr', author: 'tolkien', isbn: 'whatever', userId: 'my-user-id'
+            }),
+
+          }
+        )
+
+        expect(await res.json()).toEqual({ error: 'test error!' });
+        expect(res.status).toBe(500)
+      }
+    })
+  })
+
+  it('requires userId field', async () => {
+    await testApiHandler({
+      appHandler: newBookHandler,
+      test: async ({ fetch }) => {
+        const res = await fetch(
+          {
+            method: 'POST',
+            headers: {
+              'content-type': 'application/json'
+            },
+            body: JSON.stringify({
               title: 'lodr', author: 'tolkien', isbn: 'whatever'
             }),
 
           }
         )
-        expect(await res.json()).toEqual({ message: 'An unexpected error occurred', details: new Error('test error!') });
+
+        expect(await res.json()).toEqual({ error: 'No user found!' });
+        expect(res.status).toBe(500)
       }
     })
   })
