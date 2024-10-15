@@ -16,20 +16,6 @@ interface Params {
   credentials?: Record<string, unknown> | undefined;
 }
 
-async function authorizeCreds(credentials: { username: string; password: string }) {
-  const user: pbUser | null = await getAuthenticUser(credentials?.username || '', credentials?.password || '')
-  if (user) {
-    return user
-  } else {
-    return null
-  }
-}
-
-async function checkSignInCredentials(credentials: { username: string; password: string }) {
-  const user = await authorizeCreds(credentials)
-  return !!user;
-}
-
 async function findOrCreate(params: Params) {
   const existingUser: Array<RecordModel> = await pb.collection('users').getFullList({
     filter: `providerId="${params.user.id}"`
@@ -72,28 +58,35 @@ export const options: NextAuthOptions = {
       },
       async authorize(credentials) {
         if (!credentials) return null;
-        return authorizeCreds(credentials)
+        const authData = await pb.collection('users').authWithPassword(credentials.username, credentials.password)
+        if (authData) {
+          pb.authStore.save(authData.token, authData.record)
+        }
+        return authData?.record || null
       }
     })
   ],
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user, account }) {
       if (user) {
-        token.id = user.id;
+        token.pocketbaseToken = pb.authStore.token;
+        token.id = user.id
       }
       return token;
     },
     async session({ session, token }) {
-      const user: SessionUser = session?.user || {}
-      user.id = token.id as string
+      if (token?.id && session?.user) {
+        session.user.id = token.id as string
+      }
+      if (token?.pocketbaseToken) {
+        session.pocketbaseToken = token.pocketbaseToken as string;
+      }
       return session;
     },
     async signIn(params: Params) {
       if (params?.account?.provider === 'credentials') {
-        if (params?.credentials && typeof params.credentials?.username === 'string' && typeof params.credentials?.password === 'string') {
-          const credentials = params.credentials as { username: string; password: string }
-          return checkSignInCredentials(credentials)
-        }
+        // params user is the return object from authorize method
+        return !!params.user
       }
       if (params?.account?.provider === 'github') {
         return findOrCreate(params)
