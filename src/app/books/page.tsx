@@ -23,7 +23,8 @@ export default async function ManageBooks() {
     const bookCollection = Book.collection(books)
     return (
         <div className=''>
-            {!bookCollection.length ? <AddBookLink />
+            {!bookCollection.length
+                ? <div className='flex justify-center mt-12'><AddBookLink /></div>
                 : <BookList books={bookCollection} />}
         </div>
     )
