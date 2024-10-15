@@ -13,7 +13,7 @@ export function DeleteBookLink({ id, title }: { id: string, title: string }) {
         router.refresh();
     }
     return <Link href="#" onClick={confirm}
-        className='float-right px-2 border border-red-500 text-red-500 rounded-full'
+        className='absolute right-3 top-3 px-2 border border-red-500 text-red-500 rounded-full hover:scale-110 transition-all'
     >
         &times;
     </Link>

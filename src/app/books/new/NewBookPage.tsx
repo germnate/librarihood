@@ -18,6 +18,7 @@ export default function NewBookPage({ userId }: { userId: string | undefined }) 
         userId,
       }
     })
+    const { bookId } = await res.json();
     // router.push('/books')
     // /books is making sure to set cache: no-store
     // I've verified that the header is set in the browser
@@ -25,7 +26,8 @@ export default function NewBookPage({ userId }: { userId: string | undefined }) 
     // will not initiate a request on the server despite traveling to the /books page.
     // There is no 200 response from the server. In the meantime,
     // the below option is working as expected.
-    window.location.href = '/books'
+    window.location.href = `/books/${bookId}` // and same issue with /books/:id
+    // router.push(`/books/${bookId}`)
   }
 
   return (
