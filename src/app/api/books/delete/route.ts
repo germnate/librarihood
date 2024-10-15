@@ -8,7 +8,7 @@ async function handler(req: NextRequest) {
         if (!id) {
             throw new Error('No book id!')
         }
-        const book = await deleteBook(id)
+        await deleteBook(id)
         return NextResponse.json(({ success: true }))
     } catch (error: unknown) {
         console.error(error)
