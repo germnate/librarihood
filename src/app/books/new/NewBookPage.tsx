@@ -39,36 +39,34 @@ export default function NewBookPage({ userId }: { userId: string | undefined }) 
   }
 
   return (
-    <div>
-      <div className='flex flex-col p-4'>
-        <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
-          <div className='flex flex-col'>
-            <label>Title</label>
-            <input type='text' name='title' className='p-2 border' required />
-          </div>
-          <div className='flex flex-col'>
-            <label>Author</label>
-            <input type='text' name='author' className='p-2 border' />
-          </div>
-          <div className='flex flex-col'>
-            <label>ISBN</label>
-            <input type='text' name='isbn' className='p-2 border' />
-          </div>
-          <div className='flex gap-2'>
-            <input id='file-label' type='radio' name='select' onChange={setFile} value={coverType} checked={coverType === 'file'} />
-            <label htmlFor='file-label'>File</label>
-          </div>
-          <div className='flex gap-2'>
-            <input id='url-label' type='radio' name='select' onChange={setUrl} value={coverType} checked={coverType === 'url'} />
-            <label htmlFor='url-label'>Url</label>
-          </div>
-          <input ref={fileInputRef} type='file' accept='.jpg, .png, .webp' className={coverType !== 'file' ? 'hidden' : 'p-2 border'} />
-          <input name='coverUrl' className={coverType === 'file' ? 'hidden' : 'p-2 border'} />
-          <button type='submit' className='border py-2 bg-green-100 hover:bg-green-200'>
-            Create
-          </button>
-        </form>
-      </div>
+    <div className='flex flex-col p-4 items-center'>
+      <form onSubmit={handleSubmit} className='flex flex-col gap-4 w-full md:w-3/4 xl:w-1/2'>
+        <div className='flex flex-col'>
+          <label>Title</label>
+          <input type='text' name='title' className='p-2 border' required />
+        </div>
+        <div className='flex flex-col'>
+          <label>Author</label>
+          <input type='text' name='author' className='p-2 border' />
+        </div>
+        <div className='flex flex-col'>
+          <label>ISBN</label>
+          <input type='text' name='isbn' className='p-2 border' />
+        </div>
+        <div className='flex gap-2'>
+          <input id='file-label' type='radio' name='select' onChange={setFile} value={coverType} checked={coverType === 'file'} />
+          <label htmlFor='file-label'>File</label>
+        </div>
+        <div className='flex gap-2'>
+          <input id='url-label' type='radio' name='select' onChange={setUrl} value={coverType} checked={coverType === 'url'} />
+          <label htmlFor='url-label'>Url</label>
+        </div>
+        <input ref={fileInputRef} type='file' accept='.jpg, .png, .webp' className={coverType !== 'file' ? 'hidden' : 'p-2 border'} />
+        <input name='coverUrl' className={coverType === 'file' ? 'hidden' : 'p-2 border'} />
+        <button type='submit' className='border py-2 bg-green-100 hover:bg-green-200'>
+          Create
+        </button>
+      </form>
     </div>
   )
 }
