@@ -3,7 +3,7 @@ import * as updateBookHandler from "@/app/api/books/update/route";
 import * as booksLib from "@/app/lib/books";
 import { Book, BookFormData } from "@/app/types/book";
 
-describe('POST update book', () => {
+describe('PATCH update book', () => {
   let updateBookSpy: jest.SpyInstance;
   beforeEach(() => {
     updateBookSpy = jest.spyOn(booksLib, 'updateBook').mockImplementation(
@@ -29,13 +29,13 @@ describe('POST update book', () => {
     updateBookSpy.mockRestore();
   })
 
-  it('accepts a post request and updates a book', async () => {
+  it('accepts a PATCH request and updates a book', async () => {
     await testApiHandler({
       appHandler: updateBookHandler,
       test: async ({ fetch }) => {
         const res = await fetch(
           {
-            method: 'POST',
+            method: 'PATCH',
             headers: {
               'content-type': 'application/json'
             },
@@ -59,7 +59,7 @@ describe('POST update book', () => {
       test: async ({ fetch }) => {
         const res = await fetch(
           {
-            method: 'POST',
+            method: 'PATCH',
             headers: {
               'content-type': 'application/json'
             },
@@ -81,7 +81,7 @@ describe('POST update book', () => {
       test: async ({ fetch }) => {
         const res = await fetch(
           {
-            method: 'POST',
+            method: 'PATCH',
             headers: {
               'content-type': 'application/json'
             },
@@ -104,7 +104,7 @@ describe('POST update book', () => {
       test: async ({ fetch }) => {
         const res = await fetch(
           {
-            method: 'POST',
+            method: 'PATCH',
             headers: {
               'content-type': 'application/json'
             },
@@ -127,7 +127,7 @@ describe('POST update book', () => {
       test: async ({ fetch }) => {
         const res = await fetch(
           {
-            method: 'POST',
+            method: 'PATCH',
             headers: {
               'content-type': 'application/json'
             },
