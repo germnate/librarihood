@@ -1,5 +1,5 @@
 import pb from './db'
-import { Book } from '../types/book'
+import { Book, BookFormData } from '../types/book'
 
 function getBook(id: string) {
     return pb.collection('Books').getOne(id)
@@ -11,12 +11,16 @@ function getBooksBy(field: string, value: string) {
     })
 }
 
-function createBook(book: Book | FormData) {
+function createBook(book: Book | BookFormData) {
     return pb.collection('Books').create(book)
+}
+
+function updateBook(book: Book | BookFormData) {
+    return pb.collection('Books').update(book.id, book)
 }
 
 function deleteBook(id: string) {
     return pb.collection('Books').delete(id);
 }
 
-export { getBook, createBook, getBooksBy, deleteBook }
+export { getBook, createBook, updateBook, getBooksBy, deleteBook }

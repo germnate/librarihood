@@ -15,4 +15,8 @@ function fetchUtil({ url, body, method = 'POST' }: { url: string, body: object, 
   })
 }
 
-export { getDetailedError, fetchUtil }
+function setFormData(formData: FormData, params: any) {
+  Object.keys(params).forEach(key => formData.append(key, params[key]))
+}
+
+export { getDetailedError, fetchUtil, setFormData }

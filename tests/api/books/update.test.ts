@@ -1,12 +1,12 @@
 import { testApiHandler } from 'next-test-api-route-handler'
-import * as newBookHandler from "@/app/api/books/new/route";
+import * as updateBookHandler from "@/app/api/books/update/route";
 import * as booksLib from "@/app/lib/books";
 import { Book, BookFormData } from "@/app/types/book";
 
-describe('POST new book', () => {
-  let createBookSpy: jest.SpyInstance;
+describe('POST update book', () => {
+  let updateBookSpy: jest.SpyInstance;
   beforeEach(() => {
-    createBookSpy = jest.spyOn(booksLib, 'createBook').mockImplementation(
+    updateBookSpy = jest.spyOn(booksLib, 'updateBook').mockImplementation(
       (b: Book | BookFormData) => {
         return Promise.resolve({
           id: "RECORD_ID",
@@ -26,12 +26,12 @@ describe('POST new book', () => {
   })
 
   afterEach(() => {
-    createBookSpy.mockRestore();
+    updateBookSpy.mockRestore();
   })
 
-  it('accepts a post request and creates a book', async () => {
+  it('accepts a post request and updates a book', async () => {
     await testApiHandler({
-      appHandler: newBookHandler,
+      appHandler: updateBookHandler,
       test: async ({ fetch }) => {
         const res = await fetch(
           {
@@ -40,7 +40,7 @@ describe('POST new book', () => {
               'content-type': 'application/json'
             },
             body: JSON.stringify({
-              title: 'lotr', author: 'tolkien', isbn: 'whatever', userId: 'my-user-id'
+              id: "RECORD_ID", title: 'lotr', author: 'tolkien', isbn: 'whatever', userId: 'my-user-id'
             }),
 
           }
@@ -51,11 +51,11 @@ describe('POST new book', () => {
   })
 
   it('handles errors', async () => {
-    createBookSpy.mockImplementation(() => {
+    updateBookSpy.mockImplementation(() => {
       throw new Error('test error!');
     })
     await testApiHandler({
-      appHandler: newBookHandler,
+      appHandler: updateBookHandler,
       test: async ({ fetch }) => {
         const res = await fetch(
           {
@@ -64,7 +64,7 @@ describe('POST new book', () => {
               'content-type': 'application/json'
             },
             body: JSON.stringify({
-              title: 'lotr', author: 'tolkien', isbn: 'whatever', userId: 'my-user-id'
+              id: "RECORD_ID", title: 'lotr', author: 'tolkien', isbn: 'whatever', userId: 'my-user-id'
             }),
           }
         )
@@ -77,7 +77,7 @@ describe('POST new book', () => {
 
   it('requires userId field', async () => {
     await testApiHandler({
-      appHandler: newBookHandler,
+      appHandler: updateBookHandler,
       test: async ({ fetch }) => {
         const res = await fetch(
           {
@@ -86,7 +86,7 @@ describe('POST new book', () => {
               'content-type': 'application/json'
             },
             body: JSON.stringify({
-              title: 'lotr', author: 'tolkien', isbn: 'whatever'
+              id: "RECORD_ID", title: 'lotr', author: 'tolkien', isbn: 'whatever'
             }),
 
           }
@@ -100,7 +100,7 @@ describe('POST new book', () => {
 
   it('requires title field', async () => {
     await testApiHandler({
-      appHandler: newBookHandler,
+      appHandler: updateBookHandler,
       test: async ({ fetch }) => {
         const res = await fetch(
           {
@@ -109,13 +109,36 @@ describe('POST new book', () => {
               'content-type': 'application/json'
             },
             body: JSON.stringify({
-              author: 'tolkien', isbn: 'whatever', userId: 'my-user-id'
+              id: "RECORD_ID", author: 'tolkien', isbn: 'whatever', userId: 'my-user-id'
             }),
 
           }
         )
 
         expect(await res.json()).toEqual({ error: 'No title found!' });
+        expect(res.status).toBe(500)
+      }
+    })
+  })
+
+  it('requires id field', async () => {
+    await testApiHandler({
+      appHandler: updateBookHandler,
+      test: async ({ fetch }) => {
+        const res = await fetch(
+          {
+            method: 'POST',
+            headers: {
+              'content-type': 'application/json'
+            },
+            body: JSON.stringify({
+              title: "lotr", author: 'tolkien', isbn: 'whatever', userId: 'my-user-id'
+            }),
+
+          }
+        )
+
+        expect(await res.json()).toEqual({ error: 'No book id!' });
         expect(res.status).toBe(500)
       }
     })
