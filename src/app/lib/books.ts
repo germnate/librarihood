@@ -7,7 +7,8 @@ function getBook(id: string) {
 
 function getBooksBy(field: string, value: string) {
     return pb.collection('Books').getFullList({
-        filter: `${field} = ${value}`
+        filter: `${field} = "${value}"`,
+        cache: 'no-store'
     })
 }
 

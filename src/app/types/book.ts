@@ -1,5 +1,6 @@
 interface Book {
     id: string;
+    userId: string | undefined;
     created: string;
     updated: string;
     title: string;

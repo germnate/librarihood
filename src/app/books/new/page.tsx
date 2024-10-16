@@ -1,8 +1,8 @@
 import { getServerSession } from "next-auth";
 import { options } from "@/app/api/auth/[...nextauth]/options";
-import NewBookPage from "./NewBookPage";
+import { Form } from "../shared/form";
 
 export default async function SessionWrapper() {
     const session = await getServerSession(options);
-    return <NewBookPage userId={session?.user?.id} />
+    return <Form userId={session?.user?.id} />
 }
