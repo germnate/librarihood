@@ -9,7 +9,7 @@ async function handler(req: NextRequest) {
             throw new Error('No book id!')
         }
         await deleteBook(id)
-        return NextResponse.json(({ success: true }))
+        return NextResponse.json({ success: true })
     } catch (error: unknown) {
         console.error(error)
         if (!conformsToServerError(error)) throw error;
