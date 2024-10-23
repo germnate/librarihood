@@ -22,10 +22,17 @@ function NavBar() {
     return result;
   }
 
+  function close() {
+    setOpen(false);
+  }
+
   return (
     <>
-      <div className={`${isOpen ? '' : '-translate-x-full'} absolute w-full h-full bg-black opacity-[0.3] transition-all duration-300`}></div>
-      <nav className={`${isOpen ? 'shadow-right' : '-translate-x-full'} fixed h-screen w-32 py-5 bg-libraryGray transition-all duration-300`}
+      <div
+        onClick={close}
+        className={`${isOpen ? '' : '-translate-x-full'} absolute z-10 w-full h-full bg-black opacity-[0.3] transition-all duration-300 cursor-pointer`}>
+      </div>
+      <nav className={`${isOpen ? 'shadow-right' : '-translate-x-full'} fixed z-20 h-screen w-32 py-5 bg-libraryGray transition-all duration-300`}
       >
         <div className='flex flex-col h-full justify-between'>
           <div>
@@ -53,7 +60,10 @@ function NavBar() {
           </div>
           <Link href='/api/auth/signout' className='text-center text-white underline'>Sign Out</Link>
         </div>
-        <div className='absolute -right-6 rounded-r-lg shadow top-1/2 h-32 w-6 bg-libraryGray cursor-pointer' onClick={() => { setOpen(!isOpen) }}></div>
+        <div
+          className='absolute -right-6 rounded-r-lg shadow top-1/2 h-32 w-6 bg-libraryGray cursor-pointer'
+          onClick={() => { setOpen(!isOpen) }}>
+        </div>
       </nav >
     </>
   )

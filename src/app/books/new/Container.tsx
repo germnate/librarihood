@@ -20,7 +20,7 @@ function reduceFunction(state: State, action: Action) {
 export default function Container({ userId }: { userId: string | undefined }) {
     const reducer = useReducer(reduceFunction, { manual: true, isbn: false });
     const [state] = reducer;
-    const manualClassNames = ['transition-all duration-500 absolute left-0 right-0 '].concat(!state.manual ? '-translate-x-full' : '').join(' ')
+    const manualClassNames = ['absolute left-0 right-0 transition-all duration-500'].concat(!state.manual ? '-translate-x-full' : '').join(' ')
     const isbnClassNames = ['transition-all duration-500'].concat(!state.isbn ? 'translate-x-full' : '').join(' ')
     return (
         <div className='overflow-hidden'>
