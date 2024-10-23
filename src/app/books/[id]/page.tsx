@@ -14,7 +14,7 @@ export default async function ShowBook({ params }: { params: { id: string } }) {
         </Link>
         <img src={url || book.coverUrl} alt='Book Cover' className='h-80 w-60 mt-2 object-contain' />
         <h1 className='text-3xl'>{book.title}</h1>
-        <h2 className='text-2xl'>{book.author}</h2>
+        <h2 className='text-2xl'>{book.authors[0]}</h2>
         <span>{book.isbn}</span>
     </div>
 }

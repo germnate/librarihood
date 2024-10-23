@@ -21,7 +21,7 @@ export function IsbnSearch() {
     setIsbn(e.target.value)
   }
   return (
-    <div className='flex flex-col p-4 items-center font-sans w-full '>
+    <div className='flex flex-col p-4 items-center font-sans'>
       <form className='flex items-center justify-center w-full md:w-3/4 xl:w-1/2' >
         <label>ISBN</label>
         <input
@@ -39,12 +39,12 @@ export function IsbnSearch() {
           &rarr;
         </button>
       </form >
-      <div>
+      <div className='w-full'>
         Search Results: {harryPotter.data.totalItems}
         {
           harryPotter.data.items.map(each => {
             const item = each as Item
-            return <IsbnSearchResult item={item} />
+            return <IsbnSearchResult key={item.id} item={item} />
           })}
       </div>
     </div>

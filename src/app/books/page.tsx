@@ -13,7 +13,7 @@ export default async function ManageBooks() {
     const user: SessionUser | undefined = session?.user
     let books: Array<RecordModel> = []
     if (user?.id) {
-        books = await pb.collection('Books').getFullList({
+        books = await pb.collection('books').getFullList({
             filter: `userId = '${user.id}'`,
             cache: 'no-store'
         })
@@ -21,7 +21,7 @@ export default async function ManageBooks() {
 
     const bookCollection = Book.collection(books)
     return (
-        <div className=''>
+        <div className='pt-4'>
             {!bookCollection.length
                 ? <div className='flex justify-center'><AddBookLink /></div>
                 : <BookList books={bookCollection} />}

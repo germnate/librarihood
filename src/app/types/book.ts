@@ -4,7 +4,7 @@ interface Book {
     created: string;
     updated: string;
     title: string;
-    author: string;
+    authors: Array<string>;
     isbn?: string;
     description?: string;
     pageCount?: number;

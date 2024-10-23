@@ -5,15 +5,21 @@ import { Book } from '@/app/types/book';
 import { fetchUtil } from '@/app/utils';
 import { FileSelector, COVER_TYPE } from './FileSelector';
 
+function parseAuthors(authorsString: FormDataEntryValue | null) {
+  if (!authorsString) return [];
+  const string = new String(authorsString)
+  return JSON.stringify(string.trim().split(',').filter(Boolean))
+}
+
 export function Form({ userId, book }: { userId: string | undefined, book?: Book | undefined }) {
   const [coverType, setCoverType] = useState(COVER_TYPE.FILE);
   const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
+  const [authors, setAuthors] = useState('')
   const [isbn, setIsbn] = useState('')
   useEffect(() => {
     if (!book) return;
     setTitle(book.title)
-    setAuthor(book?.author || '')
+    setAuthors(book?.authors.join(', ') || '')
     setIsbn(book?.isbn || '')
   }, [])
   const fileInputRef = useRef<HTMLInputElement>(null)
@@ -23,7 +29,7 @@ export function Form({ userId, book }: { userId: string | undefined, book?: Book
     const bookData = {
       ...book,
       title,
-      author,
+      authors,
       isbn,
     }
     const res = await fetchUtil({ url: '/api/books/update', body: bookData, method: 'PATCH' })
@@ -37,6 +43,7 @@ export function Form({ userId, book }: { userId: string | undefined, book?: Book
     if (book) formData.append('id', book.id)
     formData.append('userId', userId)
     formData.delete('select')
+    formData.set('authors', parseAuthors(formData.get('authors')))
     if (coverType === 'file' && fileInputRef?.current?.files?.length) {
       formData.append('cover', fileInputRef.current.files[0])
       formData.delete('coverUrl')
@@ -69,16 +76,18 @@ export function Form({ userId, book }: { userId: string | undefined, book?: Book
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             required
+            placeholder='Title'
           />
         </div>
         <div className='flex flex-col'>
-          <label>Author</label>
+          <label>Authors</label>
           <input
             type='text'
-            name='author'
+            name='authors'
             className='p-2 border'
-            value={author}
-            onChange={(e) => setAuthor(e.target.value)}
+            value={authors}
+            onChange={(e) => setAuthors(e.target.value)}
+            placeholder='Separate authors with a comma. (e.g. J.R.R Tolkien, J.K. Rowling)'
           />
         </div>
         <div className='flex flex-col'>
@@ -89,6 +98,7 @@ export function Form({ userId, book }: { userId: string | undefined, book?: Book
             className='p-2 border'
             value={isbn}
             onChange={(e) => setIsbn(e.target.value)}
+            placeholder='ISBN-10 and ISBN-13 accepted.'
           />
         </div>
         {!book ?

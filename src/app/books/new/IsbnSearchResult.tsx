@@ -11,12 +11,10 @@ export function IsbnSearchResult({ item }: { item: Item }) {
             {hasImage
                 ? <img
                     className='bg-gray-200 self-center'
-                    style={{ minWidth: '128px', width: '128px', minHeight: '186px', maxHeight: '186px' }}
                     src={item.volumeInfo.imageLinks?.smallThumbnail}
                     alt='thumbnail'
                 />
-                : <div className='self-center flex justify-center items-center p-4 text-center bg-gray-200'
-                    style={{ minWidth: '128px', width: '128px', minHeight: '186px', maxHeight: '186px' }}
+                : <div className='self-center flex justify-center items-center w-32 h-48 p-4 text-center bg-gray-200'
                 >
                     Image not found
                 </div>
@@ -26,7 +24,6 @@ export function IsbnSearchResult({ item }: { item: Item }) {
                 <div>
                     <h1 className='font-bold'>{item.volumeInfo.title}</h1>
                     <h2>{item.volumeInfo.authors?.[0]}</h2>
-                    <a className='text-blue-600 hover:text-blue-400' href={item.selfLink}>{item.selfLink}</a>
                     <div>
                         <label>Publisher: </label><span>{item.volumeInfo.publisher}</span>
                     </div>
@@ -34,7 +31,7 @@ export function IsbnSearchResult({ item }: { item: Item }) {
                         <label>Date Published: </label><span>{item.volumeInfo.publishedDate}</span>
                     </div>
                 </div>
-                <button className='justify-self-end block bg-libraryGray text-white py-2'>Add to Collection</button>
+                <button className='justify-self-end block bg-libraryGray text-white py-2 md:w-64'>Add to Collection</button>
             </div>
         </div >
     )

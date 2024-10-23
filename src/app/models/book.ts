@@ -7,10 +7,10 @@ class Book implements BookType {
     created: string;
     updated: string;
     title: string;
-    author: string;
+    authors: Array<string>;
     isbn?: string;
-    collectionId: string;
-    collectionName: string;
+    collectionId?: string | undefined;
+    collectionName?: string | undefined;
     description?: string;
     pageCount?: number;
     cover?: File;
@@ -22,7 +22,7 @@ class Book implements BookType {
         this.created = data?.created
         this.updated = data?.updated
         this.title = data?.title
-        this.author = data?.author
+        this.authors = data?.authors || []
         this.isbn = data?.isbn
         this.collectionId = data?.collectionId
         this.collectionName = data?.collectionName
