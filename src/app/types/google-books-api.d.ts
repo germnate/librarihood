@@ -1,33 +1,31 @@
+type IsbnType = {
+    type: 'ISBN_10' | 'ISBN_13';
+    identifier: string;
+}
+
+type IndustryIdentifiers = IsbnType[]
+
 interface VolumeInfo {
     title: string;
-    authors: Array<string>;
-    publisher: string;
-    publishedDate: string;
+    authors?: Array<string> | undefined;
+    publisher: string | undefined;
+    publishedDate: string | undefined;
     description: string;
-    industryIdentifiers: [
-        {
-            type: 'ISBN_10';
-            identifier: string;
-        },
-        {
-            type: 'ISBN_13';
-            identifier: string;
-        },
-    ],
+    industryIdentifiers?: IndustryIdentifiers,
     readingModes: {
         text: boolean;
         image: boolean;
     };
-    pageCount: number;
+    pageCount: number | undefined;
     printType: string;
     categories: Array<string>;
-    averageRating: number;
-    ratingsCount: number;
+    averageRating: number | undefined;
+    ratingsCount: number | undefined;
     maturityRating: string;
     allowAnonLogging: boolean;
     contentVersion: string;
     panelizationSummary: {
-        containsEpubBubles: boolean;
+        containsEpubBubbles: boolean;
         containsImageBubbles: boolean;
     };
     imageLinks: {

@@ -2,6 +2,9 @@
 
 import { useState } from 'react'
 import harryPotter from '@/app/harryPotter.json'
+import Image from 'next/image';
+import { IsbnSearchResult } from './IsbnSearchResult';
+import { Item } from '@/app/types/google-books-api';
 
 export function IsbnSearch() {
   const [isbn, setIsbn] = useState('')
@@ -38,7 +41,11 @@ export function IsbnSearch() {
       </form >
       <div>
         Search Results: {harryPotter.data.totalItems}
-
+        {
+          harryPotter.data.items.map(each => {
+            const item = each as Item
+            return <IsbnSearchResult item={item} />
+          })}
       </div>
     </div>
   )
