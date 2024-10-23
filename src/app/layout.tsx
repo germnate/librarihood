@@ -17,7 +17,9 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <NavBar />
-        {children}
+        <div className='md:pl-32'>
+          {children}
+        </div>
       </body>
     </html>
   );

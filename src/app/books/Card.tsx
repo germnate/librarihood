@@ -3,13 +3,11 @@ import { DeleteBookLink } from "./DeleteBookLink"
 
 async function Card({ book }: { book: Book }) {
   return (
-    <div className='flex relative'>
-      <a href={`/books/${book.id}`} className='w-full md:w-52 h-52 p-6 shadow-md border rounded-2xl flex-shrink-0 hover:shadow-lg transition-all'>
-        <h1 className='text-xl'>{book.title}</h1>
-        <span className='text-sm'>{book.author}</span>
-      </a>
-      <DeleteBookLink id={book.id} title={book.title} />
-    </div>
+    <a href={`/books/${book.id}`}>
+      <div className='border w-40 h-48 bg-slate-200'></div>
+      <h1 className='text-xl'>{book.title}</h1>
+      <span className='text-sm'>{book.author}</span>
+    </a>
   )
 }
 
