@@ -11,6 +11,9 @@ interface Book {
     cover?: File;
     thumbnail?: string | undefined;
     smallThumbnail?: string | undefined;
+    categories?: Array<string> | undefined;
+    publisher?: string | undefined;
+    publishedDate: string | undefined;
 }
 
 export type { Book }
