@@ -26,10 +26,12 @@ export function Form({ userId, book }: { userId: string | undefined, book?: Book
 
   const handleSubmitUpdate = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const authorsData = parseAuthors(formData.get('authors'))
     const bookData = {
       ...book,
       title,
-      authors,
+      authors: authorsData,
       isbn,
     }
     const res = await fetchUtil({ url: '/api/books/update', body: bookData, method: 'PATCH' })
