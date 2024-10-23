@@ -1,12 +1,20 @@
-import type { Book } from "../types/book"
 import { DeleteBookLink } from "./DeleteBookLink"
+import pb from '@/app/lib/db'
+import { BooksRecord } from "../../../pocketbase-types";
 
-async function Card({ book }: { book: Book }) {
+function getThumbnail(book: any) {
+  if (!book?.cover) return null;
+  return pb.files.getUrl(book, book.cover, { thumb: '160x192' })
+}
+
+function Card({ book }: { book: BooksRecord }) {
+  console.log(book.smallThumbnail, book.thumbnail)
+  const url = getThumbnail(book)
   return (
     <a href={`/books/${book.id}`}>
-      <div className='border w-40 h-48 bg-slate-200'></div>
+      <img className='bg-gray-200 w-40 h-48' src={url || book.smallThumbnail || book.thumbnail} alt='thumbnail' />
       <h1 className='text-xl'>{book.title}</h1>
-      <span className='text-sm'>{book.authors[0]}</span>
+      <span className='text-sm'>{book.authors?.join(', ')}</span>
     </a>
   )
 }

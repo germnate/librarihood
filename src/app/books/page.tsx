@@ -7,11 +7,12 @@ import { options } from "../api/auth/[...nextauth]/options";
 import { RecordModel } from "pocketbase";
 import pb from '@/app/lib/db'
 import { AddBookLink } from "./AddBookLink";
+import { BooksRecord } from "../../../pocketbase-types";
 
 export default async function ManageBooks() {
     const session = await getServerSession(options);
     const user: SessionUser | undefined = session?.user
-    let books: Array<RecordModel> = []
+    let books: Array<BooksRecord> = []
     if (user?.id) {
         books = await pb.collection('books').getFullList({
             filter: `userId = '${user.id}'`,
@@ -19,12 +20,11 @@ export default async function ManageBooks() {
         })
     }
 
-    const bookCollection = Book.collection(books)
     return (
         <div className='pt-4'>
-            {!bookCollection.length
+            {!books.length
                 ? <div className='flex justify-center'><AddBookLink /></div>
-                : <BookList books={bookCollection} />}
+                : <BookList books={books} />}
         </div>
     )
 

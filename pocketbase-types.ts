@@ -35,9 +35,10 @@ export type AuthSystemFields<T = never> = {
 
 // Record types for each collection
 
-export type BooksRecord<Tauthors = unknown, Tcategories = unknown, Ttags = unknown> = {
-	authors?: null | Tauthors
-	categories?: null | Tcategories
+export type BooksRecord = {
+	id: string
+	authors?: Array<string> | null
+	categories?: Array<string> | null
 	cover?: string
 	description?: string
 	isbn?: string
@@ -46,7 +47,7 @@ export type BooksRecord<Tauthors = unknown, Tcategories = unknown, Ttags = unkno
 	publisher?: string
 	selfLink?: string
 	smallThumbnail?: string
-	tags?: null | Ttags
+	tags?: Array<string>
 	thumbnail?: string
 	title?: string
 	userId?: RecordIdString
