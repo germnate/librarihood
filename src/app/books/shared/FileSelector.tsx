@@ -38,7 +38,7 @@ export function FileSelector({ coverType, setCoverType, fileInputRef }:
         className={coverType !== 'file' ? 'hidden' : 'p-2 border'}
       />
       <input
-        name='coverUrl'
+        name='thumbnail'
         className={coverType === 'file' ? 'hidden' : 'p-2 border'}
       />
     </>

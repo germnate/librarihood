@@ -48,9 +48,9 @@ export function Form({ userId, book }: { userId: string | undefined, book?: Book
     formData.set('authors', parseAuthors(formData.get('authors')))
     if (coverType === 'file' && fileInputRef?.current?.files?.length) {
       formData.append('cover', fileInputRef.current.files[0])
-      formData.delete('coverUrl')
+      formData.delete('thumbnail')
     }
-    const url = `/api/books/${book ? 'update' : 'new'}`
+    const url = '/api/books/new'
     const res = await fetch(url, {
       method: 'POST',
       body: formData

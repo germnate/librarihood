@@ -14,7 +14,8 @@ class Book implements BookType {
     description?: string;
     pageCount?: number;
     cover?: File;
-    coverUrl?: string;
+    smallThumbnail?: string | undefined;
+    thumbnail?: string | undefined;
 
     constructor(data: RecordModel) {
         this.id = data?.id

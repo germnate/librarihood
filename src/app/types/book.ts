@@ -9,7 +9,8 @@ interface Book {
     description?: string;
     pageCount?: number;
     cover?: File;
-    coverUrl?: string;
+    thumbnail?: string | undefined;
+    smallThumbnail?: string | undefined;
 }
 
 export type { Book }
@@ -20,7 +21,7 @@ export interface BookFormData extends FormData {
     title: string,
     author?: string | undefined | null,
     isbn?: string | undefined | null,
-    coverUrl?: string | undefined | null,
+    thumbnail?: string | undefined | null,
     cover?: File | undefined | null,
 }
 

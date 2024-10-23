@@ -6,7 +6,7 @@ import Image from 'next/image';
 import { IsbnSearchResult } from './IsbnSearchResult';
 import { GoogleJson, Item } from '@/app/types/google-books-api';
 
-export function IsbnSearch() {
+export function IsbnSearch({ userId }: { userId: string | undefined }) {
   const [isbn, setIsbn] = useState('')
   const [json, setJson] = useState<GoogleJson | any>({})
   const handleSearch = async (e: React.FormEvent) => {
@@ -46,7 +46,7 @@ export function IsbnSearch() {
           json?.data ?
             json?.data?.items?.map((each: Item) => {
               const item = each
-              return <IsbnSearchResult key={item.id} item={item} />
+              return <IsbnSearchResult key={item.id} item={item} userId={userId} />
             }) : null
         }
       </div>

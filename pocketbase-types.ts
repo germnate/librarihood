@@ -39,14 +39,15 @@ export type BooksRecord<Tauthors = unknown, Tcategories = unknown, Ttags = unkno
 	authors?: null | Tauthors
 	categories?: null | Tcategories
 	cover?: string
-	coverUrl?: string
 	description?: string
 	isbn?: string
 	pageCount?: number
 	publishedDate?: string
 	publisher?: string
 	selfLink?: string
+	smallThumbnail?: string
 	tags?: null | Ttags
+	thumbnail?: string
 	title?: string
 	userId?: RecordIdString
 }
