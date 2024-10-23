@@ -4,11 +4,11 @@ import { useState } from 'react'
 import harryPotter from '@/app/harryPotter.json'
 import Image from 'next/image';
 import { IsbnSearchResult } from './IsbnSearchResult';
-import { Item } from '@/app/types/google-books-api';
+import { GoogleJson, Item } from '@/app/types/google-books-api';
 
 export function IsbnSearch() {
   const [isbn, setIsbn] = useState('')
-  const [json, setJson] = useState({})
+  const [json, setJson] = useState<GoogleJson | any>({})
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
     const response = await fetch(`/api/books/fetch?isbn=${isbn}`)
@@ -40,12 +40,15 @@ export function IsbnSearch() {
         </button>
       </form >
       <div className='w-full'>
-        Search Results: {harryPotter.data.totalItems}
+        Search Results: {json?.data?.totalItems || 0}
+        {json?.error ? <p className='text-red-600'>Error: {json?.error}</p> : null}
         {
-          harryPotter.data.items.map(each => {
-            const item = each as Item
-            return <IsbnSearchResult key={item.id} item={item} />
-          })}
+          json?.data ?
+            json?.data?.items?.map((each: Item) => {
+              const item = each
+              return <IsbnSearchResult key={item.id} item={item} />
+            }) : null
+        }
       </div>
     </div>
   )
