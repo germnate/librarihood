@@ -12,15 +12,20 @@ function parseAuthors(authorsString: FormDataEntryValue | null) {
 }
 
 export function Form({ userId, book }: { userId: string | undefined, book?: Book | undefined }) {
-  const [coverType, setCoverType] = useState(COVER_TYPE.FILE);
-  const [title, setTitle] = useState('')
-  const [authors, setAuthors] = useState('')
-  const [isbn, setIsbn] = useState('')
+  const [state, setState] = useState({
+    coverType: COVER_TYPE.FILE,
+    title: '',
+    authors: '',
+    isbn: '',
+  })
   useEffect(() => {
     if (!book) return;
-    setTitle(book.title)
-    setAuthors(book?.authors.join(', ') || '')
-    setIsbn(book?.isbn || '')
+    setState({
+      ...state,
+      title: book.title,
+      authors: book.authors.join(', ') || '',
+      isbn: book?.isbn || '',
+    })
   }, [])
   const fileInputRef = useRef<HTMLInputElement>(null)
 
@@ -30,9 +35,9 @@ export function Form({ userId, book }: { userId: string | undefined, book?: Book
     const authorsData = parseAuthors(formData.get('authors'))
     const bookData = {
       ...book,
-      title,
+      title: state.title,
       authors: authorsData,
-      isbn,
+      isbn: state.isbn,
     }
     const res = await fetchUtil({ url: '/api/books/update', body: bookData, method: 'PATCH' })
     const { bookId } = await res.json();
@@ -46,7 +51,7 @@ export function Form({ userId, book }: { userId: string | undefined, book?: Book
     formData.append('userId', userId)
     formData.delete('select')
     formData.set('authors', parseAuthors(formData.get('authors')))
-    if (coverType === 'file' && fileInputRef?.current?.files?.length) {
+    if (state.coverType === 'file' && fileInputRef?.current?.files?.length) {
       formData.append('cover', fileInputRef.current.files[0])
       formData.delete('thumbnail')
     }
@@ -66,6 +71,13 @@ export function Form({ userId, book }: { userId: string | undefined, book?: Book
     window.location.href = `/books/${bookId}` // and same issue with /books/:id
   }
 
+  const handleChangeEvent = (name: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
+    setState({
+      ...state,
+      [name]: e.target.value
+    })
+  }
+
   return (
     <div className='flex flex-col p-4 items-center'>
       <form onSubmit={book ? handleSubmitUpdate : handleSubmitCreate} className='flex flex-col gap-4 w-full md:w-3/4 xl:w-1/2'>
@@ -75,8 +87,8 @@ export function Form({ userId, book }: { userId: string | undefined, book?: Book
             type='text'
             name='title'
             className='p-2 border'
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            value={state.title}
+            onChange={handleChangeEvent('title')}
             required
             placeholder='Title'
           />
@@ -87,8 +99,8 @@ export function Form({ userId, book }: { userId: string | undefined, book?: Book
             type='text'
             name='authors'
             className='p-2 border'
-            value={authors}
-            onChange={(e) => setAuthors(e.target.value)}
+            value={state.authors}
+            onChange={handleChangeEvent('authors')}
             placeholder='Separate authors with a comma. (e.g. J.R.R Tolkien, J.K. Rowling)'
           />
         </div>
@@ -98,15 +110,15 @@ export function Form({ userId, book }: { userId: string | undefined, book?: Book
             type='text'
             name='isbn'
             className='p-2 border'
-            value={isbn}
-            onChange={(e) => setIsbn(e.target.value)}
+            value={state.isbn}
+            onChange={handleChangeEvent('isbn')}
             placeholder='ISBN-10 and ISBN-13 accepted.'
           />
         </div>
         {!book ?
           <FileSelector
-            coverType={coverType}
-            setCoverType={setCoverType}
+            coverType={state.coverType}
+            setCoverType={(coverType) => setState({ ...state, coverType })}
             fileInputRef={fileInputRef}
           />
           : null}
