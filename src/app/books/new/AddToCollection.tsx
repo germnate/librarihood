@@ -24,6 +24,7 @@ export function AddToCollection({ userId, item }: { userId: string | undefined, 
             categories: volumeInfo.categories,
             smallThumbnail: volumeInfo.imageLinks?.smallThumbnail,
             thumbnail: volumeInfo.imageLinks?.thumbnail,
+            selfLink: item.selfLink
         }
         const res = await fetchUtil({ url: '/api/books/new', body })
         const json = await res.json();
