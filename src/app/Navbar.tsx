@@ -31,7 +31,7 @@ function NavBar() {
     <>
       <div
         onClick={close}
-        className={`${navBarStatus ? '' : '-translate-x-full'} absolute z-10 w-full h-full bg-black opacity-[0.3] transition-all duration-300 cursor-pointer`}>
+        className={`${navBarStatus ? '' : '-translate-x-full'} fixed z-10 w-full h-full bg-black opacity-[0.3] transition-all duration-300 cursor-pointer`}>
       </div>
       <nav className={`${navBarStatus ? 'shadow-right' : '-translate-x-full'} fixed z-20 h-screen w-20 md:w-32 py-5 bg-libraryGray transition-all duration-300`}
       >
