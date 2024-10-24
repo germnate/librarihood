@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import edit from '@/assets/icons/edit-3-svgrepo-com.svg'
 import { Book } from "@/app/types/book";
+import { DeleteBookLink } from "../DeleteBookLink";
 
 
 function getThumbnail(book: any) {
@@ -18,9 +19,6 @@ export default async function ShowBook({ params }: { params: { id: string } }) {
         <Link href={`${params.id}/update`} className='absolute right-2 top-2 w-10 rounded-lg text-center'>
             <Image src={edit} alt='edit' />
         </Link>
-        <img src={url || book.thumbnail || book.smallThumbnail} alt='Book Cover' className='h-80 w-60 mt-2 object-contain' />
-        <h1 className='text-3xl'>{book.title}</h1>
-        <h2 className='text-2xl'>{book.authors[0]}</h2>
-        <span>{book.isbn}</span>
+        <DeleteBookLink id={book.id} title={book.title} className='my-5 md:w-48 md:self-end' />
     </div>
 }
