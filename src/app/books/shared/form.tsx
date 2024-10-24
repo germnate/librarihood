@@ -29,12 +29,12 @@ export function Form({ userId, book }: { userId: string | undefined, book?: Book
     setState({
       ...state,
       title: book.title,
-      authors: book.authors.join(', ') || '',
+      authors: book.authors?.join?.(', ') || '',
       isbn: book.isbn || '',
       publisher: book.publisher || '',
       publishedDate: book.publishedDate || '',
       pageCount: `${book.pageCount}` || '',
-      categories: book.categories?.join(', ') || '',
+      categories: book.categories?.join?.(', ') || '',
       tags: book.tags?.join?.(', ') || '',
       description: book.description || ''
     })
