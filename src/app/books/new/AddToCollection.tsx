@@ -4,7 +4,7 @@ import { Item } from "@/app/types/google-books-api";
 import { fetchUtil } from "@/app/utils";
 
 function getIsbn(item: Item) {
-    const isbn = item?.volumeInfo?.industryIdentifiers?.find(each => each.type === 'ISBN_13') ||
+    return item?.volumeInfo?.industryIdentifiers?.find(each => each.type === 'ISBN_13') ||
         item?.volumeInfo?.industryIdentifiers?.find(each => each.type === 'ISBN_10') || null
 }
 
@@ -16,7 +16,7 @@ export function AddToCollection({ userId, item }: { userId: string | undefined, 
             userId,
             title: volumeInfo.title,
             authors: volumeInfo.authors,
-            isbn: getIsbn(item),
+            isbn: getIsbn(item)?.identifier,
             publisher: volumeInfo.publisher,
             publishedDate: volumeInfo.publishedDate,
             description: volumeInfo.description,
