@@ -8,13 +8,15 @@ function getThumbnail(book: any) {
 }
 
 function Card({ book }: { book: BooksRecord }) {
-  console.log(book.smallThumbnail, book.thumbnail)
   const url = getThumbnail(book)
+  const thumbnail = url || book.smallThumbnail || book.thumbnail
   return (
-    <a href={`/books/${book.id}`}>
-      <img className='bg-gray-200 w-40 h-48' src={url || book.smallThumbnail || book.thumbnail} alt='thumbnail' />
-      <h1 className='text-xl'>{book.title}</h1>
-      <span className='text-sm'>{book.authors?.join(', ')}</span>
+    <a href={`/books/${book.id}`} className='flex flex-col items-center'>
+      {!!thumbnail ? <img className='w-40 h-48 object-contain' src={thumbnail} alt='thumbnail' />
+        : <div className='flex justify-center items-center w-40 h-48 bg-gray-200'>No Image</div>
+      }
+      <h1 className='text-xl md:max-w-40 text-center'>{book.title}</h1>
+      <h2 className='text-sm'>{book.authors?.join(', ')}</h2>
     </a>
   )
 }
