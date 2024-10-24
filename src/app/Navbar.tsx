@@ -7,12 +7,13 @@ import Image from 'next/image'
 import book from '../assets/icons/book-2-svgrepo-com.svg'
 import swap from '../assets/icons/swap-svgrepo-com.svg'
 import plus from '../assets/icons/plus-large-svgrepo-com.svg'
+import { useNavBarStatus } from './NavBarStatusContext';
 
 const commonClassNames = 'route flex justify-center mx-auto rounded-lg shadow-dark cursor-pointer transition-all hover:rounded-none'
 
 function NavBar() {
   const pathname = usePathname();
-  const [isOpen, setOpen] = useState(false);
+  const { navBarStatus, setNavBarStatus } = useNavBarStatus();
   function constructClassNames(href: string, classNames: string) {
     const classes = [commonClassNames];
     if (href === pathname) {
@@ -23,16 +24,16 @@ function NavBar() {
   }
 
   function close() {
-    setOpen(false);
+    setNavBarStatus(false);
   }
 
   return (
     <>
       <div
         onClick={close}
-        className={`${isOpen ? '' : '-translate-x-full'} absolute z-10 w-full h-full bg-black opacity-[0.3] transition-all duration-300 cursor-pointer`}>
+        className={`${navBarStatus ? '' : '-translate-x-full'} absolute z-10 w-full h-full bg-black opacity-[0.3] transition-all duration-300 cursor-pointer`}>
       </div>
-      <nav className={`${isOpen ? 'shadow-right' : '-translate-x-full'} fixed z-20 h-screen w-32 py-5 bg-libraryGray transition-all duration-300`}
+      <nav className={`${navBarStatus ? 'shadow-right' : '-translate-x-full'} fixed z-20 h-screen w-32 py-5 bg-libraryGray transition-all duration-300`}
       >
         <div className='flex flex-col h-full justify-between'>
           <div>
@@ -62,7 +63,7 @@ function NavBar() {
         </div>
         <div
           className='absolute -right-6 rounded-r-lg shadow top-1/2 h-32 w-6 bg-libraryGray cursor-pointer'
-          onClick={() => { setOpen(!isOpen) }}>
+          onClick={() => { setNavBarStatus(!navBarStatus) }}>
         </div>
       </nav >
     </>

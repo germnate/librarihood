@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { NavBar } from "./Navbar";
-
+import { NavBarStatusProvider } from "./NavBarStatusContext";
 
 export const metadata: Metadata = {
   title: "Librarihood",
@@ -16,8 +16,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <NavBar />
-        {children}
+        <NavBarStatusProvider>
+          <NavBar />
+          {children}
+        </NavBarStatusProvider>
       </body>
     </html>
   );
