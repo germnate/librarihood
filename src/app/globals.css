@@ -24,15 +24,17 @@ body {
   position: relative;
 }
 
-.current-route::before {
-  position: absolute;
-  content: '';
-  height: 4px;
-  width: 4px;
-  border-radius: 50%;
-  background-color: #FFE590;
-  left: -15px;
-  top: 30px;
+@layer components {
+  .current-route::before {
+    position: absolute;
+    content: '';
+    height: 4px;
+    width: 4px;
+    border-radius: 50%;
+    background-color: #FFE590;
+    top: 30px;
+    @apply left-[-6px] md:left-[-15px]
+  }
 }
 
 @layer utilities {
