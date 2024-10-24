@@ -23,7 +23,7 @@ export default function Container({ userId }: { userId: string | undefined }) {
     const manualClassNames = ['absolute left-0 right-0 transition-all duration-500'].concat(!state.manual ? '-translate-x-full' : '').join(' ')
     const isbnClassNames = ['transition-all duration-500'].concat(!state.isbn ? 'translate-x-full' : '').join(' ')
     return (
-        <div className='overflow-hidden'>
+        <div className='overflow-x-hidden relative h-full'>
             <SwitchButton reducer={reducer} />
             <div className={manualClassNames}>
                 <Form userId={userId} />
