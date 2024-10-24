@@ -21,6 +21,7 @@ export function Form({ userId, book }: { userId: string | undefined, book?: Book
     publishedDate: '',
     pageCount: '',
     categories: '',
+    tags: '',
     description: '',
   })
   useEffect(() => {
@@ -34,6 +35,7 @@ export function Form({ userId, book }: { userId: string | undefined, book?: Book
       publishedDate: book.publishedDate || '',
       pageCount: `${book.pageCount}` || '',
       categories: book.categories?.join(', ') || '',
+      tags: book.tags?.join?.(', ') || '',
       description: book.description || ''
     })
   }, [])
@@ -44,6 +46,7 @@ export function Form({ userId, book }: { userId: string | undefined, book?: Book
     const formData = new FormData(e.currentTarget);
     const authorsData = parseStringData(formData.get('authors'))
     const genresData = parseStringData(formData.get('categories'))
+    const tagsData = parseStringData(formData.get('tags'))
     const bookData = {
       ...book,
       title: state.title,
@@ -53,6 +56,7 @@ export function Form({ userId, book }: { userId: string | undefined, book?: Book
       publishedDate: state.publishedDate,
       pageCount: state.pageCount,
       categories: genresData,
+      tags: tagsData,
       description: state.description
     }
     const res = await fetchUtil({ url: '/api/books/update', body: bookData, method: 'PATCH' })
@@ -68,6 +72,7 @@ export function Form({ userId, book }: { userId: string | undefined, book?: Book
     formData.delete('select')
     formData.set('authors', parseStringData(formData.get('authors')))
     formData.set('categories', parseStringData(formData.get('categories')))
+    formData.set('tags', parseStringData(formData.get('tags')))
     if (state.coverType === 'file' && fileInputRef?.current?.files?.length) {
       formData.append('cover', fileInputRef.current.files[0])
       formData.delete('thumbnail')
@@ -174,6 +179,17 @@ export function Form({ userId, book }: { userId: string | undefined, book?: Book
             value={state.categories}
             onChange={handleChangeEvent('categories')}
             placeholder='Separate Genres with a comma.'
+          />
+        </div>
+        <div className='flex flex-col'>
+          <label>Tags</label>
+          <input
+            type='text'
+            name='tags'
+            className='p-2 border'
+            value={state.tags}
+            onChange={handleChangeEvent('tags')}
+            placeholder='Enter other things to filter by, not genres'
           />
         </div>
         <div className='flex flex-col'>

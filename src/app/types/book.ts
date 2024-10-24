@@ -14,6 +14,7 @@ interface Book {
     categories?: Array<string> | undefined;
     publisher?: string | undefined;
     publishedDate: string | undefined;
+    tags?: Array<string> | undefined;
 }
 
 export type { Book }
