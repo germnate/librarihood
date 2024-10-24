@@ -16,11 +16,15 @@ function getThumbnail(book: any) {
 export default async function ShowBook({ params }: { params: { id: string } }) {
     const [book] = await getBooksBy('id', params.id)
     const url = getThumbnail(book);
-    return <div className='flex flex-col px-8'>
+    const thumbnail = url || book.smallThumbnail || book.thumbnail
+    return <div className='flex flex-col px-8 gap-4'>
         <Link href={`${params.id}/update`} className='absolute right-2 top-2 w-10 rounded-lg text-center'>
             <Image src={edit} alt='edit' />
         </Link>
-        <img src={url || book.thumbnail || book.smallThumbnail} alt='Book Cover' className='self-center h-80 w-60 mt-2 object-contain' />
+        {!!thumbnail ? <img src={thumbnail} alt='Book Cover' className='self-center h-80 w-60 mt-2 object-contain' />
+            : <div className='self-center mt-2 flex justify-center items-center w-60 h-80 bg-gray-200'>No Image</div>
+        }
+
         <div>
             <Tags book={book} />
             <h1 className='text-xl'>{book.title}</h1>
