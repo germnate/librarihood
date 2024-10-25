@@ -12,6 +12,13 @@ function getBooksBy(field: string, value: string) {
     })
 }
 
+function getBooks(filters: string) {
+    return pb.collection('books').getFullList({
+        filter: filters,
+        cache: 'no-store',
+    })
+}
+
 function createBook(book: Book | BookFormData) {
     return pb.collection('books').create(book)
 }
@@ -24,4 +31,4 @@ function deleteBook(id: string) {
     return pb.collection('books').delete(id);
 }
 
-export { getBook, createBook, updateBook, getBooksBy, deleteBook }
+export { getBook, createBook, updateBook, getBooksBy, getBooks, deleteBook }
