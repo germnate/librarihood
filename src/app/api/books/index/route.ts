@@ -25,6 +25,7 @@ async function handler(req: NextRequest) {
     }
     const filters: Array<string> = [];
     if (json?.tokens.length) {
+        console.log(json)
         ARRAY_COLUMNS.forEach(column => {
             json.tokens.forEach(token => {
                 filters.push(`${column}[] ~ ${token}`)
@@ -36,7 +37,8 @@ async function handler(req: NextRequest) {
             })
         })
     }
-    const filterString = [`userId = '${json.userId}'`].concat(`(${filters.join(' || ')})` || [])
+    const filterString = [`userId = '${json.userId}'`]
+    if (filters.length) filterString.push(`(${filters.join(' || ')})`)
     const books = await getBooks(filterString.join(' and '))
     return NextResponse.json({ books });
 }

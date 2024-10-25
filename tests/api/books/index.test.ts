@@ -54,4 +54,48 @@ describe('index', () => {
       }
     })
   })
+
+  it('can create a query without filters', async () => {
+    await testApiHandler({
+      appHandler: indexBookHandler,
+      test: async ({ fetch }) => {
+        const res = await fetch(
+          {
+            method: 'POST',
+            headers: {
+              'content-type': 'application/json'
+            },
+            body: JSON.stringify({
+              userId: 'some-user',
+              tokens: []
+            }),
+
+          }
+        )
+        expect(indexSpy).toHaveBeenCalledWith("userId = 'some-user'")
+        expect(await res.json()).toStrictEqual({ books: [book, anotherBook] })
+      }
+    })
+  })
+
+  it('responds with an error if no userId provided', async () => {
+    await testApiHandler({
+      appHandler: indexBookHandler,
+      test: async ({ fetch }) => {
+        const res = await fetch(
+          {
+            method: 'POST',
+            headers: {
+              'content-type': 'application/json'
+            },
+            body: JSON.stringify({
+              tokens: []
+            }),
+
+          }
+        )
+        expect(await res.json()).toStrictEqual({ error: 'No user id!' })
+      }
+    })
+  })
 })
