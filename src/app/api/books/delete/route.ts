@@ -1,5 +1,5 @@
 import { deleteBook } from "@/app/lib/books"
-import { ServerError, conformsToServerError } from "@/app/types/errors/ServerError"
+import { conformsToServerError } from "@/app/types/errors/ServerError"
 import { NextRequest, NextResponse } from "next/server"
 
 async function handler(req: NextRequest) {

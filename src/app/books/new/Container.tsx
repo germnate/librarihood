@@ -3,7 +3,7 @@
 import { Form } from "../shared/form";
 import { IsbnSearch } from "./IsbnSearch";
 import { Action, State, SwitchButton, ACTIONS } from './SwitchButton'
-import { useState, useReducer } from 'react'
+import { useReducer } from 'react'
 
 function reduceFunction(state: State, action: Action) {
     switch (action.type) {

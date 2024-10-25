@@ -1,11 +1,8 @@
 import type { NextAuthOptions } from 'next-auth'
 import GitHubProvider from 'next-auth/providers/github'
 import CredentialsProvider from 'next-auth/providers/credentials'
-import { getAuthenticUser } from '../../../lib/user'
-import { User as pbUser } from '../../../types/user'
 import pb from '../../../lib/db'
 import { RecordModel } from 'pocketbase'
-import { SessionUser } from '@/app/types/session-user'
 import { User, Account, Profile } from 'next-auth'
 
 interface Params {
@@ -67,7 +64,7 @@ export const options: NextAuthOptions = {
     })
   ],
   callbacks: {
-    async jwt({ token, user, account }) {
+    async jwt({ token, user }) {
       if (user) {
         token.pocketbaseToken = pb.authStore.token;
         token.id = user.id

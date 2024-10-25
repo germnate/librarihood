@@ -42,7 +42,13 @@ export function conformsToBookFormData(formData: FormData, options?: { isNew: bo
     return true;
 }
 
-export function conformsToBook(json: any, options?: { isNew: boolean }): json is Book {
+type BareMinimumBook = {
+    id?: string | undefined,
+    userId?: string | undefined,
+    title?: string | undefined,
+}
+
+export function conformsToBook(json: BareMinimumBook, options?: { isNew: boolean }): json is Book {
     if (!json.userId) {
         throw new Error('No user found!')
     }

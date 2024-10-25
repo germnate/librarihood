@@ -1,14 +1,7 @@
 import { executeQuery } from "@/app/external_api/google-book"
 import { conformsToServerError } from "@/app/types/errors/ServerError"
 import { NextRequest, NextResponse } from "next/server"
-
-export function validIsbn10(isbn: string) {
-  return isbn.match(/^(?:\d{9}X|\d{10})$/)
-}
-
-export function validIsbn13(isbn: string) {
-  return isbn.match(/^(978|979)-?\d{10}$/)
-}
+import { validIsbn10, validIsbn13 } from "@/app/utils"
 
 async function handler(req: NextRequest) {
   try {

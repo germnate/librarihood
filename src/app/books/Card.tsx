@@ -1,8 +1,7 @@
-import { DeleteBookLink } from "./DeleteBookLink"
 import pb from '@/app/lib/db'
 import { BooksRecord } from "../../../pocketbase-types";
 
-function getThumbnail(book: any) {
+function getThumbnail(book: BooksRecord) {
   if (!book?.cover) return null;
   return pb.files.getUrl(book, book.cover, { thumb: '160x192' })
 }

@@ -68,7 +68,7 @@ export type UsersRecord = {
 }
 
 // Response types include system fields and match responses from the PocketBase API
-export type BooksResponse<Tauthors = unknown, Tcategories = unknown, Ttags = unknown, Texpand = unknown> = Required<BooksRecord<Tauthors, Tcategories, Ttags>> & BaseSystemFields<Texpand>
+export type BooksResponse<Texpand = unknown> = Required<BooksRecord> & BaseSystemFields<Texpand>
 export type LoansResponse<Texpand = unknown> = Required<LoansRecord> & BaseSystemFields<Texpand>
 export type UsersResponse<Texpand = unknown> = Required<UsersRecord> & AuthSystemFields<Texpand>
 

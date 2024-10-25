@@ -2,10 +2,8 @@
 
 import Link from "next/link"
 import { fetchUtil } from "../utils";
-import { useRouter } from "next/navigation";
 
 export function DeleteBookLink({ id, title, className = '' }: { id: string, title: string, className: string }) {
-    const router = useRouter();
     const confirm = async () => {
         const isResponse = window.confirm(`Are you sure you want to delete ${title}?`)
         if (!isResponse) return;

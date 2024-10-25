@@ -1,14 +1,32 @@
 'use client';
 
 import { useState } from 'react'
-import harryPotter from '@/app/harryPotter.json'
-import Image from 'next/image';
 import { IsbnSearchResult } from './IsbnSearchResult';
 import { GoogleJson, Item } from '@/app/types/google-books-api';
 
+type ResponseError = {
+  error: string,
+}
+
+function isGoogleJson(json: unknown): json is GoogleJson {
+  if (!json) return false;
+  if (typeof json === 'object') {
+    return 'data' in json;
+  }
+  return false;
+}
+
+function isError(json: unknown): json is ResponseError {
+  if (!json) return false;
+  if (typeof json === 'object') {
+    return 'error' in json;
+  }
+  return false;
+}
+
 export function IsbnSearch({ userId }: { userId: string | undefined }) {
   const [isbn, setIsbn] = useState('')
-  const [json, setJson] = useState<GoogleJson | any>({})
+  const [json, setJson] = useState<unknown>(null)
   const [showNoResults, setShowNoResults] = useState(false);
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -53,16 +71,19 @@ export function IsbnSearch({ userId }: { userId: string | undefined }) {
         </button>
       </form >
       <div className='w-full'>
-        Search Results: {json?.data?.totalItems || 0}
-        <div className={`${showNoResults ? 'opacity-100 ' : 'opacity-0 '}px-4 py-2 bg-libraryGray text-gray-400 text-center rounded-full transition-all duration-300`}>No Results</div>
-        {json?.error ? <p className='text-red-600'>Error: {json?.error}</p> : null}
-        {
-          json?.data ?
-            json?.data?.items?.map((each: Item) => {
+        {isGoogleJson(json)
+          ? <>
+            Search Results: {json.data.totalItems || 0}
+            <div className={`${showNoResults ? 'opacity-100 ' : 'opacity-0 '}px-4 py-2 bg-libraryGray text-gray-400 text-center rounded-full transition-all duration-300`}>No Results</div>
+            {json.data.items.map((each: Item) => {
               const item = each
               return <IsbnSearchResult key={item.id} item={item} userId={userId} />
-            }) : null
-        }
+            })}
+          </>
+          : null}
+        {isError(json) ?
+          <p className='text-red-600'>Error: {json.error}</p>
+          : null}
       </div>
     </div>
   )

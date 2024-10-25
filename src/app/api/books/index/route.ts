@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import pb from '@/app/lib/db'
 import { conformsToServerError } from "@/app/types/errors/ServerError";
 import { getBooks } from "@/app/lib/books";
 
@@ -15,6 +14,7 @@ async function handler(req: NextRequest) {
     let json: Payload | undefined;
     try {
         json = await req.json();
+        console.log('json', json)
         if (!json?.userId) {
             throw new Error('No user id!')
         }
@@ -25,7 +25,6 @@ async function handler(req: NextRequest) {
     }
     const filters: Array<string> = [];
     if (json?.tokens.length) {
-        console.log(json)
         ARRAY_COLUMNS.forEach(column => {
             json.tokens.forEach(token => {
                 filters.push(`${column}[] ~ ${token}`)
@@ -39,8 +38,14 @@ async function handler(req: NextRequest) {
     }
     const filterString = [`userId = '${json.userId}'`]
     if (filters.length) filterString.push(`(${filters.join(' || ')})`)
-    const books = await getBooks(filterString.join(' and '))
-    return NextResponse.json({ books });
+    try {
+        const books = await getBooks(filterString.join(' and '))
+        return NextResponse.json({ books });
+    } catch (error) {
+        console.error(error)
+        if (!conformsToServerError(error)) throw error;
+        return NextResponse.json({ error: error.message }, { status: 500 });
+    }
 }
 
 export { handler as POST }
