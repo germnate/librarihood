@@ -54,7 +54,7 @@ export function ItemSelectorModal({
         setOpen(false)
     }
 
-    const classNames = ['absolute left-0 right-0 top-0 bottom-0 bg-black/50 transition-all duration-300 cursor-pointer']
+    const classNames = ['absolute z-[9] left-0 right-0 top-0 bottom-0 bg-black/50 transition-all duration-300 cursor-pointer']
     if (!isOpen) classNames.push('-translate-y-full')
 
     return (
@@ -64,7 +64,7 @@ export function ItemSelectorModal({
                     <input className='bg-transparent px-4 mb-2 focus:outline-white-1 rounded-lg grow' placeholder='Search...' value={search} onChange={(e) => setSearch(e.target.value)} />
                     <button onClick={createTag} className='bg-gray-500 px-2 py-1 rounded-full mb-2'>Add Tag</button>
                 </div>
-                <div className='h-[75dvh] overflow-auto'>
+                <div className='max-h-[75dvh] overflow-auto'>
                     {stateItems.map((item, index) => {
                         return (
                             <div key={item.id} className={`flex justify-between px-4 py-2 bg-gray${index % 2 ? '-500' : '480'}`} onClick={() => updateChecked(item.id)}>

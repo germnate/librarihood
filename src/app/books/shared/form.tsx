@@ -4,7 +4,6 @@ import { useRef, useState, useEffect } from 'react'
 import { Book } from '@/app/types/book';
 import { fetchUtil } from '@/app/utils';
 import { FileSelector, COVER_TYPE } from './FileSelector';
-import { ItemSelectorModal } from './ItemSelectorModal';
 
 function parseStringData(dataString: FormDataEntryValue | null) {
   if (!dataString) return [];
@@ -12,7 +11,15 @@ function parseStringData(dataString: FormDataEntryValue | null) {
   return JSON.stringify(string.trim().split(',').filter(Boolean))
 }
 
-export function Form({ userId, book }: { userId: string | undefined, book?: Book | undefined }) {
+export function Form({
+  userId,
+  book,
+  setItemSelectorOpen
+}: {
+  userId: string | undefined,
+  book?: Book | undefined,
+  setItemSelectorOpen: (bool: boolean) => void
+}) {
   const [state, setState] = useState({
     coverType: COVER_TYPE.FILE,
     title: '',
@@ -25,7 +32,6 @@ export function Form({ userId, book }: { userId: string | undefined, book?: Book
     tags: '',
     description: '',
   })
-  const [itemSelectorOpen, setItemSelectorOpen] = useState(false)
   useEffect(() => {
     if (!book) return;
     setState({
@@ -207,7 +213,6 @@ export function Form({ userId, book }: { userId: string | undefined, book?: Book
           {book ? 'Update' : 'Create'}
         </button>
       </form>
-      <ItemSelectorModal isOpen={itemSelectorOpen} setOpen={setItemSelectorOpen} />
     </div>
   )
 }
