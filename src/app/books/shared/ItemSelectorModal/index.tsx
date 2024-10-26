@@ -44,14 +44,21 @@ export function ItemSelectorModal({
 
     function createTag() {
         if (!search?.length || stateItems.find(each => each.name === search)) return;
-        const newItem = { id: crypto.randomUUID(), name: search, checked: false }
+        const newItem = { id: crypto.randomUUID(), name: search, checked: true }
         setStateItems([...stateItems, newItem])
+        setSearch('');
     }
 
     function onClickConfirm() {
         console.log(stateItems)
         confirmCallback(stateItems)
         setOpen(false)
+    }
+
+    function onPressEnter(e: KeyboardEvent) {
+        if (e.key === 'Enter') {
+            createTag();
+        }
     }
 
     const classNames = ['absolute z-[9] left-0 right-0 top-0 bottom-0 bg-black/50 transition-all duration-300 cursor-pointer']
@@ -61,7 +68,7 @@ export function ItemSelectorModal({
         <div onClick={close} className={classNames.join(' ')}>
             <div className='flex flex-col mx-auto mt-12 px-2 py-2 bg-libraryGray sm:w-3/4 max-w-4xl opacity-100 rounded-lg shadow-lg text-gray-300 cursor-auto'>
                 <div className='flex justify-between items-center gap-1'>
-                    <input className='bg-transparent px-4 mb-2 focus:outline-white-1 rounded-lg grow' placeholder='Search...' value={search} onChange={(e) => setSearch(e.target.value)} />
+                    <input className='bg-transparent px-4 mb-2 focus:outline-white-1 rounded-lg grow' placeholder='Search...' value={search} onChange={(e) => setSearch(e.target.value)} onKeyDown={onPressEnter} />
                     <button onClick={createTag} className='bg-gray-500 px-2 py-1 rounded-full mb-2'>Add Tag</button>
                 </div>
                 <div className='max-h-[75dvh] overflow-auto'>

@@ -4,6 +4,8 @@ import { useRef, useState, useEffect } from 'react'
 import { Book } from '@/app/types/book';
 import { fetchUtil } from '@/app/utils';
 import { FileSelector, COVER_TYPE } from './FileSelector';
+import { ModalItem } from './ItemSelectorModal';
+import { Tag } from './Tag';
 
 function parseStringData(dataString: FormDataEntryValue | null) {
   if (!dataString) return [];
@@ -14,11 +16,13 @@ function parseStringData(dataString: FormDataEntryValue | null) {
 export function Form({
   userId,
   book,
-  setItemSelectorOpen
+  setTagSelectorOpen,
+  tags
 }: {
   userId: string | undefined,
   book?: Book | undefined,
-  setItemSelectorOpen: (bool: boolean) => void
+  setTagSelectorOpen: (bool: boolean) => void,
+  tags: Array<ModalItem>
 }) {
   const [state, setState] = useState({
     coverType: COVER_TYPE.FILE,
@@ -189,7 +193,12 @@ export function Form({
           />
         </div>
         <div className='flex flex-col'>
-          <button onClick={(e) => { e.preventDefault(); setItemSelectorOpen(true); }}>Tags</button>
+          <div className='flex gap-1 flex-wrap mb-4'>
+            {tags?.map?.(tag => {
+              return <Tag key={tag.id} tag={tag.name} />
+            })}
+          </div>
+          <button onClick={(e) => { e.preventDefault(); setTagSelectorOpen(true); }} className='bg-gray-300 text-gray-700'>+Tags</button>
         </div>
         <div className='flex flex-col'>
           <label>Description</label>
