@@ -15,7 +15,7 @@ function Card({ book }: { book: BooksRecord }) {
         : <div className='flex justify-center items-center w-40 h-48 bg-gray-200'>No Image</div>
       }
       <h1 className='text-xl md:max-w-40 text-center'>{book.title}</h1>
-      <h2 className='text-sm'>{book.authors?.join(', ')}</h2>
+      {/* <h2 className='text-sm'>{book.authors?.join(', ')}</h2> */}
     </a>
   )
 }

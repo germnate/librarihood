@@ -33,7 +33,6 @@ export function Form({
     publishedDate: '',
     pageCount: '',
     categories: '',
-    tags: '',
     description: '',
   })
   useEffect(() => {
@@ -47,7 +46,6 @@ export function Form({
       publishedDate: book.publishedDate || '',
       pageCount: `${book.pageCount}` || '',
       categories: book.categories?.join?.(', ') || '',
-      // tags: book.tags?.join?.(', ') || '',
       description: book.description || ''
     })
   }, [])
@@ -83,11 +81,18 @@ export function Form({
     formData.delete('select')
     formData.set('authors', parseStringData(formData.get('authors')))
     formData.set('categories', parseStringData(formData.get('categories')))
-    // formData.set('tags', parseStringData(formData.get('tags')))
+    // formData.set('tags', tags)
     if (state.coverType === 'file' && fileInputRef?.current?.files?.length) {
       formData.append('cover', fileInputRef.current.files[0])
       formData.delete('thumbnail')
     }
+
+    // Here I need to getOrCreateTags to get ids from pocketbase
+    const tagsResponse = await fetchUtil({ url: '/api/tags/getOrCreate', body: tags })
+    const fetched = await tagsResponse.json()
+    console.log('fetched', fetched)
+    const tagIds = fetched.tags.map(each => each.id)
+    formData.set('tags', tagIds)
     const url = '/api/books/new'
     const res = await fetch(url, {
       method: 'POST',
@@ -195,7 +200,7 @@ export function Form({
         <div className='flex flex-col'>
           <div className='flex gap-1 flex-wrap mb-4'>
             {tags?.map?.(tag => {
-              return <Tag key={tag.id} tag={tag.name} />
+              return <Tag key={tag.name} tag={tag.name} />
             })}
           </div>
           <button onClick={(e) => { e.preventDefault(); setTagSelectorOpen(true); }} className='bg-gray-300 text-gray-700'>+Tags</button>
