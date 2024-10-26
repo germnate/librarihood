@@ -14,6 +14,7 @@ const config: Config = {
         libraryGray: "#4A4A4A",
         libraryOrange: "#FFA023",
         libraryBlue: "#23A0FF",
+        gray480: 'rgb(117 124 138)',
       },
       boxShadow: {
         dark: '0px 2px 5px 0px black',

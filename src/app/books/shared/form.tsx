@@ -4,6 +4,7 @@ import { useRef, useState, useEffect } from 'react'
 import { Book } from '@/app/types/book';
 import { fetchUtil } from '@/app/utils';
 import { FileSelector, COVER_TYPE } from './FileSelector';
+import { ItemSelectorModal } from './ItemSelectorModal';
 
 function parseStringData(dataString: FormDataEntryValue | null) {
   if (!dataString) return [];
@@ -24,6 +25,7 @@ export function Form({ userId, book }: { userId: string | undefined, book?: Book
     tags: '',
     description: '',
   })
+  const [itemSelectorOpen, setItemSelectorOpen] = useState(false)
   useEffect(() => {
     if (!book) return;
     setState({
@@ -35,18 +37,17 @@ export function Form({ userId, book }: { userId: string | undefined, book?: Book
       publishedDate: book.publishedDate || '',
       pageCount: `${book.pageCount}` || '',
       categories: book.categories?.join?.(', ') || '',
-      tags: book.tags?.join?.(', ') || '',
+      // tags: book.tags?.join?.(', ') || '',
       description: book.description || ''
     })
   }, [])
   const fileInputRef = useRef<HTMLInputElement>(null)
-
   const handleSubmitUpdate = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const authorsData = parseStringData(formData.get('authors'))
     const genresData = parseStringData(formData.get('categories'))
-    const tagsData = parseStringData(formData.get('tags'))
+    // const tagsData = parseStringData(formData.get('tags'))
     const bookData = {
       ...book,
       title: state.title,
@@ -56,7 +57,7 @@ export function Form({ userId, book }: { userId: string | undefined, book?: Book
       publishedDate: state.publishedDate,
       pageCount: state.pageCount,
       categories: genresData,
-      tags: tagsData,
+      // tags: tagsData,
       description: state.description
     }
     const res = await fetchUtil({ url: '/api/books/update', body: bookData, method: 'PATCH' })
@@ -72,7 +73,7 @@ export function Form({ userId, book }: { userId: string | undefined, book?: Book
     formData.delete('select')
     formData.set('authors', parseStringData(formData.get('authors')))
     formData.set('categories', parseStringData(formData.get('categories')))
-    formData.set('tags', parseStringData(formData.get('tags')))
+    // formData.set('tags', parseStringData(formData.get('tags')))
     if (state.coverType === 'file' && fileInputRef?.current?.files?.length) {
       formData.append('cover', fileInputRef.current.files[0])
       formData.delete('thumbnail')
@@ -182,15 +183,7 @@ export function Form({ userId, book }: { userId: string | undefined, book?: Book
           />
         </div>
         <div className='flex flex-col'>
-          <label>Tags</label>
-          <input
-            type='text'
-            name='tags'
-            className='p-2 border'
-            value={state.tags}
-            onChange={handleChangeEvent('tags')}
-            placeholder='Enter other things to filter by, not genres'
-          />
+          <button onClick={(e) => { e.preventDefault(); setItemSelectorOpen(true); }}>Tags</button>
         </div>
         <div className='flex flex-col'>
           <label>Description</label>
@@ -214,6 +207,7 @@ export function Form({ userId, book }: { userId: string | undefined, book?: Book
           {book ? 'Update' : 'Create'}
         </button>
       </form>
+      <ItemSelectorModal isOpen={itemSelectorOpen} setOpen={setItemSelectorOpen} />
     </div>
   )
 }
