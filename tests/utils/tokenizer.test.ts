@@ -31,4 +31,11 @@ describe('tokenizer', () => {
         tokens = tokenizer(undefined)
         expect(tokens).toStrictEqual([])
     })
+
+    it('does not duplicate single values', () => {
+        let tokens = tokenizer('Book');
+        expect(tokens).toStrictEqual(['book'])
+        tokens = tokenizer('Anthony, Taylor');
+        expect(tokens).toStrictEqual(['anthony', 'taylor'])
+    })
 })

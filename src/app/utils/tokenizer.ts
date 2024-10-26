@@ -7,7 +7,7 @@ export function tokenizer(str: string | null | undefined) {
     const input = str.toLowerCase().replace(/[!@#\$%\^&\*\.()\+\{\}\[\]\?]/g, ' ').replace(/\s+/g, ' ').trim();
     const commaSeparatedTokens = input.split(',').map(each => each.trim());
     return commaSeparatedTokens.reduce((acc, token) => {
-        const split = token.split(' ').filter(word => !ignoreList.includes(word))
+        const split = token.split(' ').filter(word => !ignoreList.includes(word) && !commaSeparatedTokens.includes(word))
         return acc.concat(split)
     }, commaSeparatedTokens)
 }
